@@ -37,7 +37,10 @@ public class SubActivity extends AppCompatActivity {
     public void initListener(){
         btnSub.setOnClickListener(v -> {
             Log.d(TAG, "onCreate: MyData.data : " + MyData.data);
-            finish();
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("username", "ssar");
+            setResult(RESULT_OK, resultIntent); // 1000, -1, username : ssar
+            finish(); // 나를 호출한 화면으로 데이터를 응답
         });
     }
 }

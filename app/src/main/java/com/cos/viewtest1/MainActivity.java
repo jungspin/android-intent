@@ -1,5 +1,10 @@
 package com.cos.viewtest1;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -10,6 +15,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
+import com.cos.viewtest1.util.IntentFlagSetting;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity2";
@@ -17,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private MainActivity mContext = this; // 항상 이렇게 쓰거라
     private Button btnMain;
     private Button btnTel;
+    private IntentFlagSetting intentFlagSetting;
 
     // 안드로이드 생명주기
     @Override
@@ -92,13 +100,17 @@ public class MainActivity extends AppCompatActivity {
                     mContext,
                     SubActivity.class // 아직 메모리에 안떴어서 파일의 정보를 적어줘. 이 정보를 통해서 new 해줌
             );
-            // 디폴트는 no flag
-            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // 이 intent 만 이렇게 동작한다. -> 함수 셋팅 best
+            //intentFlagSetting.flagSetting(intent);
+            //Log.d(TAG, "intent.getFlags(): " + intent.getFlags());
+
 
             intent.putExtra("myKey", "수박"); // 트럭에 싣고 감. 다음화면까지 감. 기본자료형만 됨!
             intent.putExtra("user", new User(1, "ssar", "1234"));
-            startActivity(intent); // 응답을 받지는 못함
-            //startActivityForResult(); // -> 얘가 응답이 가능한 애
+            //startActivity(intent); // 응답을 받지는 못함
+            //startActivityForResult(intent, 1000); // -> 얘가 응답이 가능한 애
+            activityResultLauncher.launch(intent);
+            //Log.d(TAG, "initListener: activityResultLauncher : " + );
+          
         });
         btnTel.setOnClickListener(v -> {
             Intent intent = new Intent(
@@ -108,4 +120,28 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    private ActivityResultLauncher activityResultLauncher = (
+                registerForActivityResult(
+                        new ActivityResultContracts.StartActivityForResult(),
+                        (ActivityResult result)->{
+                            // 데이터 응답의 결과는 여기서 받으면 된다
+                            String resultData = result.getData().getStringExtra("username");
+                            Log.d(TAG, "result: " + resultData);
+                        }
+                )
+            );
+
+
+
+//    @Override // 콜백시켜줌 -> 온크리에이트가 또 실행 되지 않으니까 getIntent 할 수 없어
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        String username = data.getStringExtra("username");
+//
+//        Log.d(TAG, "onActivityResult: requestCode : " + requestCode);
+//        Log.d(TAG, "onActivityResult: resultCode : " + resultCode);
+//        Log.d(TAG, "onActivityResult: username : " + username);
+//    }
 }
