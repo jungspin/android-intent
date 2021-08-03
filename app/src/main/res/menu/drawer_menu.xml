@@ -4,12 +4,12 @@
     <item
         android:id="@+id/nav_camera"
         android:icon="@drawable/ic_start"
-        android:title="menu1">
+        android:title="Main">
     </item>
     <item
         android:id="@+id/nav_gallery"
         android:icon="@drawable/ic_start"
-        android:title="menu2">
+        android:title="Second">
     </item>
     <item
         android:id="@+id/nav_tools"

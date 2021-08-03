@@ -33,7 +33,7 @@ public class SecondActivity extends AppCompatActivity {
 
     public void initListener(){
         // 공통적으로 만들어야돼
-        NavigationViewHelper.enableNavigation(mContext, nav, MainActivity.class);;
+        NavigationViewHelper.enableNavigation(mContext, nav);;
 
     }
 }
